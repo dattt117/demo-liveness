@@ -28,6 +28,7 @@ Xem `.env.example`. Các biến `NEXT_PUBLIC_*` được inline lúc build, nên
 - `NEXT_PUBLIC_MEDIAPIPE_WASM_ROOT`, `NEXT_PUBLIC_MEDIAPIPE_FACE_MODEL_URL`: mặc định lấy từ jsDelivr / Google Storage. Muốn self-host thì đổi 2 biến này.
 - `NEXT_PUBLIC_TVWEB_SDK_URL`, `NEXT_PUBLIC_TVWEB_ASSET_ROOT`, `NEXT_PUBLIC_TVWEB_RESOURCE_ROOT`: TVWebSDK là SDK thương mại. PVCB đang trỏ asset về CDN riêng của họ, nên trước khi dùng thật cần xin license và CDN từ Trusting Social.
   - Nếu không có `resourceRoot`, model blazeface sẽ lấy từ `public/models/blazeface/`. URL mặc định của SDK (TF Hub trên `storage.googleapis.com`) đã trả 403. Tracking (log event) của SDK được tắt bằng `logCredentials: { enable: false }`.
+- `NEXT_PUBLIC_SITE_URL`: URL gốc khi deploy, có kèm basePath. Dùng cho link ảnh chia sẻ (og:image) và canonical.
 - `NEXT_PUBLIC_BASE_PATH`: dùng khi deploy dưới subpath.
 
 Các ngưỡng thử thách (số bước, timeout) nằm ở `configs/liveness.ts`. Ngưỡng nhận diện cử chỉ nằm ở `lib/liveness/mediapipe/challenges.ts`.
