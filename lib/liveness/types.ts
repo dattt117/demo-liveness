@@ -13,11 +13,17 @@ export interface CapturedGesture {
   image: CapturedImage
 }
 
+// Frame JPEG base64 (không prefix) do TVWebSDK ghi lại ~180ms/frame
+export type CapturedFrame = { base64: string; time?: number } & Record<
+  string,
+  unknown
+>
+
 export interface LivenessResult {
   engine: EngineId
   frontal: CapturedImage[]
   gestures: CapturedGesture[]
-  frameCount: number
+  frames: CapturedFrame[]
   durationMs: number
 }
 
@@ -25,6 +31,7 @@ export interface LivenessResult {
 export interface LivenessPayload {
   frontal: string[]
   gesture: { base64: string; gesture: string }[]
+  videos: CapturedFrame[]
 }
 
 export interface RunnerProps {
@@ -64,5 +71,5 @@ export async function toPayload(
       }))
     ),
   ])
-  return { frontal, gesture }
+  return { frontal, gesture, videos: result.frames }
 }

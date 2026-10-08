@@ -7,7 +7,7 @@ Web demo để kiểm tra **active liveness** khuôn mặt ngay trên trình duy
 | **MediaPipe** | Dùng Face Landmarker (`@mediapipe/tasks-vision`) chạy hoàn toàn ở client. Bước đầu là nhìn thẳng để lấy ảnh frontal, sau đó là 3 thử thách ngẫu nhiên: chớp mắt, quay trái, quay phải, mỉm cười. |
 | **TVWebSDK** | Dùng SDK của Trusting Social (`@tsocial/tvweb-sdk@5.13.6`), port từ `onboarding-trust-data-webview` (PVCB). SDK tự dựng UI camera. |
 
-Kết quả của cả 2 engine có cùng shape `LivenessResult` (gồm ảnh frontal và ảnh từng cử chỉ). Màn kết quả cho tải xuống payload JSON `{ frontal: [base64], gesture: [{ base64, gesture }] }`, cùng format với onboarding PVCB.
+Kết quả của cả 2 engine có cùng shape `LivenessResult` (gồm ảnh frontal và ảnh từng cử chỉ). Màn kết quả cho tải xuống payload JSON `{ frontal: [base64], gesture: [{ base64, gesture }], videos: [frame] }`, cùng format với onboarding PVCB.
 
 > ⚠️ **Đây chỉ là demo phía client.** Engine chỉ xác nhận người dùng đã làm đúng thao tác. Muốn kết luận người thật hay giả mạo (ảnh in, màn hình replay, deepfake) thì cần backend chấm điểm trên ảnh/frame đã thu được, ví dụ qua TrustVision API như bên PVCB.
 

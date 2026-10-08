@@ -73,7 +73,6 @@ export class LivenessSession {
   private holdCount = 0
   private stepStartedAt = 0
   private startedAt = 0
-  private frameCount = 0
   private frontal: CapturedImage[] = []
   private gestures: CapturedGesture[] = []
   private snapshot: SessionSnapshot
@@ -144,7 +143,6 @@ export class LivenessSession {
         video.currentTime !== this.lastVideoTime
       ) {
         this.lastVideoTime = video.currentTime
-        this.frameCount++
         const step = this.snapshot.steps[this.snapshot.stepIndex]
         const rule = CHALLENGE_RULES[step]
         const analysis = analyzeFace(landmarker.detectForVideo(video, now), {
@@ -176,7 +174,7 @@ export class LivenessSession {
               engine: "mediapipe",
               frontal: this.frontal,
               gestures: this.gestures,
-              frameCount: this.frameCount,
+              frames: [],
               durationMs: Math.round(performance.now() - this.startedAt),
             })
           }

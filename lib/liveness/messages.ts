@@ -23,8 +23,17 @@ export const GESTURE_INSTRUCTION: Record<GestureName, string> = {
   smile: "Mỉm cười",
 }
 
+// Tên bước của TVWebSDK
+const TV_STEP_LABEL: Record<string, string> = {
+  frontal: "Nhìn thẳng",
+  left: "Quay trái",
+  right: "Quay phải",
+  up: "Ngẩng lên",
+  down: "Cúi xuống",
+}
+
 export function gestureLabel(name: string) {
-  return GESTURE_INSTRUCTION[name as GestureName] ?? name
+  return GESTURE_INSTRUCTION[name as GestureName] ?? TV_STEP_LABEL[name] ?? name
 }
 
 export function toError(e: unknown): Error {

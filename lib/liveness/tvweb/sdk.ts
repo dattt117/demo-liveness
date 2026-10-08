@@ -2,7 +2,12 @@ import LIVENESS_CONFIG from "@/configs/liveness"
 
 import { toCameraAccessError } from "../camera-permission"
 import { FACE_ISSUE_MESSAGE, toError } from "../messages"
-import { CapturedGesture, LivenessResult, toCapturedImage } from "../types"
+import {
+  CapturedFrame,
+  CapturedGesture,
+  LivenessResult,
+  toCapturedImage,
+} from "../types"
 
 interface TVLivenessStep {
   name: string
@@ -12,8 +17,7 @@ interface TVLivenessStep {
 interface TVLivenessDoneResult {
   frontalFaces: Blob[]
   steps: TVLivenessStep[]
-  capturedFrames?: unknown[]
-  apiCheckPassed?: boolean
+  capturedFrames?: CapturedFrame[]
 }
 
 interface TVWebSDKInstance {
@@ -119,15 +123,22 @@ export function runTVLiveness(container: HTMLElement): TVLivenessHandle {
         customErrors: CUSTOM_ERRORS,
         onLivenessDetectionDone: (result: TVLivenessDoneResult) => {
           destroy()
-          const gestures: CapturedGesture[] = (result.steps ?? []).map((s) => ({
-            name: s.name,
-            image: toCapturedImage(s.image.blob),
-          }))
+          const steps = result.steps ?? []
+          const frontalBlobs = result.frontalFaces?.length
+            ? result.frontalFaces
+            : steps.filter((s) => s.name === "frontal").map((s) => s.image.blob)
+          // steps có cả bước "frontal" trùng với frontalFaces
+          const gestures: CapturedGesture[] = steps
+            .filter((s) => s.name !== "frontal")
+            .map((s) => ({
+              name: s.name,
+              image: toCapturedImage(s.image.blob),
+            }))
           resolve({
             engine: "tvweb",
-            frontal: (result.frontalFaces ?? []).map(toCapturedImage),
+            frontal: frontalBlobs.map(toCapturedImage),
             gestures,
-            frameCount: result.capturedFrames?.length ?? 0,
+            frames: result.capturedFrames ?? [],
             durationMs: Math.round(performance.now() - startedAt),
           })
         },
