@@ -39,3 +39,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# env theo môi trường được commit
+!deploy/*/.env
+!.env.example
